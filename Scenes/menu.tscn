@@ -69,6 +69,7 @@ offset_left = 783.0
 offset_top = 3.0
 offset_right = 857.0
 offset_bottom = 78.0
+disabled = true
 
 [node name="Parallax2D3" type="Parallax2D" parent="." unique_id=1389999157]
 scroll_offset = Vector2(753, 26)
