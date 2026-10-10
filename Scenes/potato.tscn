@@ -38,6 +38,8 @@
 [ext_resource type="Texture2D" uid="uid://c146gxtkxumo8" path="res://Assets/Sprites/Characther/50% arriba 1.png" id="26_6kye7"]
 [ext_resource type="Texture2D" uid="uid://4vgujum8b34s" path="res://Assets/Sprites/Characther/50% arriba 2.png" id="27_jgn4a"]
 [ext_resource type="Texture2D" uid="uid://c5yrrbdi866m0" path="res://Assets/Sprites/Characther/50% arriba 3.png" id="28_by1m6"]
+[ext_resource type="AudioStream" uid="uid://cw3jr8x4y1c7k" path="res://Assets/Audios/PotatoDamage.mp3" id="32_hrlre"]
+[ext_resource type="AudioStream" uid="uid://dhsji305wqqgg" path="res://Assets/Audios/PotatoDeath.wav" id="33_4b5ue"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sy2vk"]
 atlas = ExtResource("20_kgn00")
@@ -302,3 +304,9 @@ animation = &"Up100"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=345451347]
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_ydnqi")
+
+[node name="potatoDamge" type="AudioStreamPlayer" parent="." unique_id=679295592]
+stream = ExtResource("32_hrlre")
+
+[node name="Explode" type="AudioStreamPlayer" parent="." unique_id=2052605298]
+stream = ExtResource("33_4b5ue")
