@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://34dm2wwch3di"
-path="res://.godot/imported/abajo3 100.png-c31c097e813dc19284f633170d3e091c.ctex"
+uid="uid://dqhfdgye4igt0"
+path="res://.godot/imported/50% boca abierta abajo 3.png-d3f011419601191358a719c3158929e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Characther/abajo3 100.png"
-dest_files=["res://.godot/imported/abajo3 100.png-c31c097e813dc19284f633170d3e091c.ctex"]
+source_file="res://Assets/Sprites/Characther/50% boca abierta abajo 3.png"
+dest_files=["res://.godot/imported/50% boca abierta abajo 3.png-d3f011419601191358a719c3158929e5.ctex"]
 
 [params]
 

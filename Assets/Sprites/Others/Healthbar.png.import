@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bp6v8uknq8cwh"
-path="res://.godot/imported/izquierda 2 100.png-0cff5d509f14c4177ef440ebe7e249fc.ctex"
+uid="uid://cbrbfoefb8a3w"
+path="res://.godot/imported/Healthbar.png-bfc5a84257a619e46b33d2c13d717e44.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Characther/izquierda 2 100.png"
-dest_files=["res://.godot/imported/izquierda 2 100.png-0cff5d509f14c4177ef440ebe7e249fc.ctex"]
+source_file="res://Assets/Sprites/Others/Healthbar.png"
+dest_files=["res://.godot/imported/Healthbar.png-bfc5a84257a619e46b33d2c13d717e44.ctex"]
 
 [params]
 

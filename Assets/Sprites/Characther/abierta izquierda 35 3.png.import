@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3g6c2vgbvtbg"
-path="res://.godot/imported/izquierda 1 100.png-f60e7b26b13ca44b3f71b33d2c4acb76.ctex"
+uid="uid://2tbgo7sbybyq"
+path="res://.godot/imported/abierta izquierda 35 3.png-e168f74fe293bec6434a701da8a82b3e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Characther/izquierda 1 100.png"
-dest_files=["res://.godot/imported/izquierda 1 100.png-f60e7b26b13ca44b3f71b33d2c4acb76.ctex"]
+source_file="res://Assets/Sprites/Characther/abierta izquierda 35 3.png"
+dest_files=["res://.godot/imported/abierta izquierda 35 3.png-e168f74fe293bec6434a701da8a82b3e.ctex"]
 
 [params]
 

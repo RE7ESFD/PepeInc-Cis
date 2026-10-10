@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://olfhpl5jhjd6"
-path="res://.godot/imported/arriba 2 100.png-3d19375f70df274cbd1adc91090440bd.ctex"
+uid="uid://cep35nxacvc4h"
+path="res://.godot/imported/50% boca abierta izquierda 3.png-ac56b7be6afea8f231ff00c23ceaf4d6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Characther/arriba 2 100.png"
-dest_files=["res://.godot/imported/arriba 2 100.png-3d19375f70df274cbd1adc91090440bd.ctex"]
+source_file="res://Assets/Sprites/Characther/50% boca abierta izquierda 3.png"
+dest_files=["res://.godot/imported/50% boca abierta izquierda 3.png-ac56b7be6afea8f231ff00c23ceaf4d6.ctex"]
 
 [params]
 

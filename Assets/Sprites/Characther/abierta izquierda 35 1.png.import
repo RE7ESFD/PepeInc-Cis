@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cemcfheukloir"
-path="res://.godot/imported/arriba1 100.png-23a8f673fdeab5fa13eb83b4d8fd6203.ctex"
+uid="uid://d3hnp4k257v1l"
+path="res://.godot/imported/abierta izquierda 35 1.png-81cce61aff0cdb3b4da446250d6fbd20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Characther/arriba1 100.png"
-dest_files=["res://.godot/imported/arriba1 100.png-23a8f673fdeab5fa13eb83b4d8fd6203.ctex"]
+source_file="res://Assets/Sprites/Characther/abierta izquierda 35 1.png"
+dest_files=["res://.godot/imported/abierta izquierda 35 1.png-81cce61aff0cdb3b4da446250d6fbd20.ctex"]
 
 [params]
 
