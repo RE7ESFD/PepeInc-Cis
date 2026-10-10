@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://b5brof84pok3k"]
+
+[ext_resource type="Texture2D" uid="uid://cw4afrak3vo27" path="res://Assets/Sprites/Menu/Gemini_Generated_Image_nzxc8ynzxc8ynzxc (1).jpeg" id="1_158mb"]
+[ext_resource type="Script" uid="uid://dh3nbfsvdemyi" path="res://Scenes/menu.gd" id="1_jsrd8"]
+[ext_resource type="Texture2D" uid="uid://dg8jhnofew17v" path="res://Assets/Sprites/Menu/TABLA DE PICAR.jpeg" id="2_158mb"]
+[ext_resource type="Shader" uid="uid://djcq0sk40kkdg" path="res://Scenes/blanco.gdshader" id="3_158mb"]
+[ext_resource type="VideoStream" uid="uid://bwaqrvu4ttyn1" path="res://Assets/Sprites/video/fire_chases_potato_v4.ogv" id="3_wwsa2"]
+[ext_resource type="Texture2D" uid="uid://dw7pd41kt1jdh" path="res://Assets/Sprites/Menu/ruedita-removebg-preview.png" id="5_wwsa2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sfpqe"]
+shader = ExtResource("3_158mb")
+shader_parameter/threshold = 0.92
+
+[node name="Control" type="Control" unique_id=1326255230]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -7.0
+offset_top = 2.0
+offset_right = 697.0
+offset_bottom = 656.0
+script = ExtResource("1_jsrd8")
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1210496314]
+scroll_offset = Vector2(15, -7)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=485836736]
+position = Vector2(415, 169.49998)
+scale = Vector2(0.45171338, 0.58272064)
+texture = ExtResource("1_158mb")
+
+[node name="Parallax2D2" type="Parallax2D" parent="." unique_id=1907059316]
+scroll_offset = Vector2(-3, 281)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D2" unique_id=669375687]
+position = Vector2(434.3125, 239.5)
+scale = Vector2(0.614613, 0.51692706)
+texture = ExtResource("2_158mb")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1759445548]
+material = SubResource("ShaderMaterial_sfpqe")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.057000004
+anchor_top = 0.47200003
+anchor_right = 0.91800004
+anchor_bottom = 0.91
+offset_left = -722.128
+offset_top = -375.68802
+offset_right = 260.72797
+offset_bottom = 151.85999
+stream = ExtResource("3_wwsa2")
+autoplay = true
+expand = true
+loop = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1339214817]
+position = Vector2(430, 362)
+zoom = Vector2(1.32, 0.9)
+
+[node name="Button" type="Button" parent="." unique_id=130051970]
+layout_mode = 0
+offset_top = 221.0
+offset_right = 397.0
+offset_bottom = 321.0
+
+[node name="Button2" type="Button" parent="." unique_id=999632088]
+layout_mode = 0
+offset_left = 783.0
+offset_top = 3.0
+offset_right = 857.0
+offset_bottom = 78.0
+
+[node name="Parallax2D3" type="Parallax2D" parent="." unique_id=1389999157]
+scroll_offset = Vector2(753, 26)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D3" unique_id=371765686]
+position = Vector2(68.499985, 18.500002)
+scale = Vector2(0.2174556, 0.20867209)
+texture = ExtResource("5_wwsa2")
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_in_button_pressed"]
