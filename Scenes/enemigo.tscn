@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://cm1g3mwijihs1"]
 
 [ext_resource type="Texture2D" uid="uid://dsfpbl04ba5uk" path="res://Assets/Sprites/Enemies/file_01m4hkbp6pjx2r36epm4aah008.png" id="1_7kcpm"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/Enemies/ataque_horno.png" id="3_ataque"]
+[ext_resource type="Script" path="res://src/main/java/enemy/Horno.java" id="2_horno"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xnvsw"]
+size = Vector2(18, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hlx46"]
 atlas = ExtResource("1_7kcpm")
@@ -60,9 +63,35 @@ region = Rect2(256, 768, 256, 256)
 atlas = ExtResource("1_7kcpm")
 region = Rect2(512, 768, 256, 256)
 
+[sub_resource type="AtlasTexture" id="Atlas_ataque0"]
+atlas = ExtResource("3_ataque")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Atlas_ataque1"]
+atlas = ExtResource("3_ataque")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Atlas_ataque2"]
+atlas = ExtResource("3_ataque")
+region = Rect2(512, 0, 256, 256)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_sqrl1"]
 resource_local_to_scene = true
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_ataque0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_ataque1")
+}, {
+"duration": 2.0,
+"texture": SubResource("Atlas_ataque2")
+}],
+"loop": false,
+"name": &"ataque",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hlx46")
@@ -120,10 +149,13 @@ animations = [{
 size = Vector2(24, 25)
 
 [node name="Enemigo" type="CharacterBody2D" unique_id=1608357195]
+collision_layer = 2
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("2_horno")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=581510335]
 shape = SubResource("RectangleShape2D_xnvsw")
-disabled = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1788197623]
 scale = Vector2(0.13281253, 0.13085935)
@@ -131,8 +163,10 @@ sprite_frames = SubResource("SpriteFrames_sqrl1")
 animation = &"walking"
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1142239063]
+collision_layer = 0
+collision_mask = 1
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=5162242]
 position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_nqfvd")
-disabled = true

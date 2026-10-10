@@ -9,6 +9,7 @@ import godot.api.PackedScene;
 import godot.api.ResourceLoader;
 import godot.core.StringName;
 import godot.core.Vector2;
+import godot.global.GD;
 
 /**
  * Spawnea enemigos en un anillo alrededor de la papa.
@@ -36,6 +37,11 @@ public class SpawnerEnemigos extends Node2D {
     @Override
     public void _ready() {
         escenaEnemigo = (PackedScene) ResourceLoader.load("res://Scenes/enemigo.tscn");
+        if (escenaEnemigo == null) {
+            GD.printErr("SpawnerEnemigos: no se pudo cargar res://Scenes/enemigo.tscn "
+                    + "(revisa que existan todos los sprites que usa la escena). Spawner apagado.");
+            setProcess(false);
+        }
         intervaloActual = intervaloInicial;
     }
 

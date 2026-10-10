@@ -16,9 +16,10 @@ import godot.core.Vector2;
 import godot.core.VariantArray;
 
 /**
- * Enemigo básico tipo Brotato: persigue a la papa y le pega por contacto.
+ * Enemigo básico tipo Brotato: persigue a la papa y cuando la alcanza
+ * se frena, abre la puerta del horno (animación "ataque") y le pega.
  * Escena: res://Scenes/enemigo.tscn
- * Nodos que necesita como hijos: "AnimatedSprite2D" y "Hitbox" (Area2D).
+ * Nodos hijos que necesita: "AnimatedSprite2D" y "Hitbox" (Area2D).
  */
 @Script
 public class Horno extends CharacterBody2D {
@@ -27,13 +28,16 @@ public class Horno extends CharacterBody2D {
     @Visible public double vidaMax = 30.0;
     @Visible public double velocidad = 60.0;
     @Visible public double danio = 10.0;
-    @Visible public double tiempoEntreAtaques = 0.8; // segundos
+    @Visible public double tiempoEntreAtaques = 0.8; // descanso después de cada ataque
+    @Visible public int frameDelGolpe = 2;           // en qué frame de "ataque" se hace el daño
 
     // ---- Estado interno ----
     private double vida;
     private double cooldownAtaque = 0.0;
     private double tiempoFlash = 0.0;
     private boolean muerto = false;
+    private boolean atacando = false;
+    private boolean golpeHecho = false;
 
     private AnimatedSprite2D sprite;
     private Area2D hitbox;
@@ -42,6 +46,7 @@ public class Horno extends CharacterBody2D {
     private final StringName grupoEnemigos = new StringName("enemigos");
     private final StringName animIdle = new StringName("idle");
     private final StringName animWalk = new StringName("walking");
+    private final StringName animAtaque = new StringName("ataque");
 
     private final Color colorNormal = new Color(1.0, 1.0, 1.0, 1.0);
     private final Color colorGolpe = new Color(1.0, 0.35, 0.35, 1.0);
@@ -64,11 +69,22 @@ public class Horno extends CharacterBody2D {
         if (cooldownAtaque > 0) cooldownAtaque -= delta;
         actualizarFlash(delta);
 
+        if (atacando) {
+            procesarAtaque();
+            return;
+        }
+
         Node2D papa = buscarPapa();
         if (papa == null) {
             // No hay papa (murió o no está en la escena): quieto
             setVelocity(new Vector2(0.0, 0.0));
             sprite.play(animIdle);
+            return;
+        }
+
+        // Si la papa está dentro del Hitbox y ya pasó el descanso -> atacar
+        if (cooldownAtaque <= 0 && papaEnHitbox() != null) {
+            empezarAtaque();
             return;
         }
 
@@ -79,8 +95,44 @@ public class Horno extends CharacterBody2D {
 
         if (dir.getX() != 0) sprite.setFlipH(dir.getX() < 0);
         sprite.play(animWalk);
+    }
 
-        intentarAtacar();
+    // ------------------------------------------------------------------
+    // Ataque
+    // ------------------------------------------------------------------
+
+    private void empezarAtaque() {
+        atacando = true;
+        golpeHecho = false;
+        setVelocity(new Vector2(0.0, 0.0));
+        sprite.play(animAtaque); // la animación "ataque" NO hace loop
+    }
+
+    private void procesarAtaque() {
+        // El daño se hace en un frame concreto (cuando sale el fuego),
+        // y solo si la papa sigue cerca: si alcanzó a esquivar, no le pega.
+        if (!golpeHecho && sprite.getFrame() >= frameDelGolpe) {
+            golpeHecho = true;
+            Potato papa = papaEnHitbox();
+            if (papa != null) papa.recibirDanio(danio);
+        }
+
+        // Cuando la animación termina, vuelve a caminar
+        if (!sprite.isPlaying()) {
+            atacando = false;
+            cooldownAtaque = tiempoEntreAtaques;
+            sprite.play(animWalk);
+        }
+    }
+
+    /** Devuelve la papa si está dentro del Hitbox, si no null. */
+    private Potato papaEnHitbox() {
+        VariantArray<Node2D> cuerpos = hitbox.getOverlappingBodies();
+        for (int i = 0; i < cuerpos.size(); i++) {
+            Node2D cuerpo = cuerpos.get(i);
+            if (cuerpo instanceof Potato) return (Potato) cuerpo;
+        }
+        return null;
     }
 
     /** Busca la papa por grupo, así no importa en qué parte del árbol esté. */
@@ -90,20 +142,9 @@ public class Horno extends CharacterBody2D {
         return null;
     }
 
-    /** Daño por contacto: si la papa está dentro del Hitbox, le pega cada X segundos. */
-    private void intentarAtacar() {
-        if (cooldownAtaque > 0) return;
-
-        VariantArray<Node2D> cuerpos = hitbox.getOverlappingBodies();
-        for (int i = 0; i < cuerpos.size(); i++) {
-            Node2D cuerpo = cuerpos.get(i);
-            if (cuerpo instanceof Potato) {
-                ((Potato) cuerpo).recibirDanio(danio);
-                cooldownAtaque = tiempoEntreAtaques;
-                return;
-            }
-        }
-    }
+    // ------------------------------------------------------------------
+    // Vida
+    // ------------------------------------------------------------------
 
     /** Lo llaman las balas / ataques de la papa. */
     @Register
@@ -135,3 +176,4 @@ public class Horno extends CharacterBody2D {
         danio *= multiplicador;
     }
 }
+
