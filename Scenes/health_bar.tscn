@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://ex5f86cf57om"]
+
+[ext_resource type="Script" uid="uid://cmro1rk2rms3" path="res://src/main/java/Game/HealthBar.java" id="1_ap322"]
+[ext_resource type="Texture2D" uid="uid://cbrbfoefb8a3w" path="res://Assets/Sprites/Others/Healthbar.png" id="2_4vfrx"]
+[ext_resource type="Texture2D" uid="uid://dygosglhh43ra" path="res://Assets/Sprites/Characther/abierta 100% abajo 1.png" id="3_p1cfu"]
+[ext_resource type="Texture2D" uid="uid://cthjrpa06vvmj" path="res://Assets/Sprites/Characther/abierta abajo 35 1.png" id="4_rdj5c"]
+[ext_resource type="Texture2D" uid="uid://4vkndkgl6ujq" path="res://Assets/Sprites/Characther/50% boca abierta abajo 1.png" id="5_wxnkl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e15o"]
+bg_color = Color(0.5294118, 0, 0.105882354, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 26
+corner_radius_bottom_right = 29
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w7mgy"]
+bg_color = Color(0.52783763, 0, 0.104274295, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h4t55"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_p1cfu")
+}],
+"loop": 1,
+"name": &"100",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_rdj5c")
+}],
+"loop": 1,
+"name": &"35",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_wxnkl")
+}],
+"loop": 1,
+"name": &"70",
+"speed": 5.0
+}]
+
+[node name="HealthBar" type="Node2D" unique_id=1078859949]
+script = ExtResource("1_ap322")
+
+[node name="Panel" type="Panel" parent="." unique_id=546472464]
+offset_left = -15.0
+offset_top = 13.0
+offset_right = 14.0
+offset_bottom = 43.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4e15o")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1164279438]
+offset_left = -7.0
+offset_top = 12.0
+offset_right = 6.0
+offset_bottom = 15.0
+color = Color(0.5294118, 0, 0.105882354, 1)
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=947742284]
+offset_left = -7.0
+offset_top = -44.0
+offset_right = 6.0
+offset_bottom = 12.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_w7mgy")
+value = 50.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=955159132]
+scale = Vector2(0.097222224, 0.10363248)
+texture = ExtResource("2_4vfrx")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=950198288]
+position = Vector2(-1, 26.999998)
+scale = Vector2(0.13, 0.117)
+sprite_frames = SubResource("SpriteFrames_h4t55")
+animation = &"35"

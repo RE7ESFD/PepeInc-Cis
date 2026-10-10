@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bydelevwk5ru6"]
+
+[ext_resource type="Script" uid="uid://0ooqg1nq3xp3" path="res://settings.gd" id="1_4geyq"]
+
+[node name="Settings" type="Control" unique_id=1953407763]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4geyq")
+
+[node name="Button" type="Button" parent="." unique_id=674280293]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 11.0
+offset_right = 159.0
+offset_bottom = 86.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
