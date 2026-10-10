@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://4sdy0mtv1vnm"]
+
+[ext_resource type="Texture2D" uid="uid://ceccqg3sl0lj6" path="res://Assets/Sprites/pause/menuPausa.png" id="1_tgh8a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qosno"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xqa5d"]
+
+[node name="Pausa" type="CanvasLayer" unique_id=673176062]
+process_mode = 2
+layer = 10
+
+[node name="Sprite2D" type="TextureRect" parent="." unique_id=377652738]
+offset_left = -20.0
+offset_top = -17.0
+offset_right = 634.0
+offset_bottom = 365.0
+texture = ExtResource("1_tgh8a")
+
+[node name="Button" type="Button" parent="." unique_id=381177262]
+offset_left = 215.0
+offset_top = 94.0
+offset_right = 405.0
+offset_bottom = 156.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qosno")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xqa5d")
+disabled = true
+
+[node name="Button2" type="Button" parent="." unique_id=112369670]
+offset_left = 215.0
+offset_top = 164.0
+offset_right = 408.0
+offset_bottom = 226.0
+disabled = true
+
+[node name="Button3" type="Button" parent="." unique_id=931482924]
+offset_left = 215.0
+offset_top = 235.0
+offset_right = 408.0
+offset_bottom = 293.0
+disabled = true
