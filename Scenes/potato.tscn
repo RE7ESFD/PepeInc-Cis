@@ -64,14 +64,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("8_32kxm")
-}],
-"loop": 1,
-"name": &"Idle 35",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": ExtResource("2_5c2fc")
 }, {
 "duration": 1.0,
@@ -82,6 +74,14 @@ animations = [{
 }],
 "loop": 1,
 "name": &"Idle100",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_32kxm")
+}],
+"loop": 1,
+"name": &"Idle35",
 "speed": 5.0
 }, {
 "frames": [{
@@ -100,20 +100,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("8_rufei")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_gt2i8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_47fx0")
-}],
-"loop": 1,
-"name": &"Left 35",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": ExtResource("5_0jtyu")
 }, {
 "duration": 1.0,
@@ -124,6 +110,20 @@ animations = [{
 }],
 "loop": 1,
 "name": &"Left100",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_rufei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_gt2i8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_47fx0")
+}],
+"loop": 1,
+"name": &"Left35",
 "speed": 5.0
 }, {
 "frames": [{
@@ -192,7 +192,7 @@ script = ExtResource("1_d4g48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1561015967]
 sprite_frames = SubResource("SpriteFrames_8w0r3")
-animation = &"Idle100"
+animation = &"Left35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=345451347]
 position = Vector2(0, 1)
