@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dvja8w331hy6q" path="res://Scenes/potato.tscn" id="1_ci6au"]
 [ext_resource type="Texture2D" uid="uid://bxas1aafkar13" path="res://Assets/Sprites/BaseSprites/01-Gemini_Generated_Image_dfuh5wdfuh5wdfuh.jpg" id="1_myvm1"]
 [ext_resource type="PackedScene" uid="uid://cm1g3mwijihs1" path="res://Scenes/enemigo.tscn" id="3_myvm1"]
+[ext_resource type="PackedScene" uid="uid://ex5f86cf57om" path="res://Scenes/health_bar.tscn" id="3_q0mm3"]
 [ext_resource type="Script" uid="uid://cuxhed2hcm2oq" path="res://src/main/java/enemy/SpawnerEnemigos.java" id="5_np2xp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_q0mm3"]
@@ -16835,6 +16836,10 @@ limit_top = -1250
 limit_right = 3900
 limit_bottom = 2200
 position_smoothing_enabled = true
+
+[node name="HealthBar" parent="Potato/Camera2D" unique_id=1078859949 instance=ExtResource("3_q0mm3")]
+position = Vector2(1807.9999, -584)
+scale = Vector2(10, 10)
 
 [node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=87447505]
 script = ExtResource("5_np2xp")

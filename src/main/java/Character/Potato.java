@@ -16,15 +16,18 @@ import godot.global.GD;
 public class Potato extends CharacterBody2D {
 	private AnimatedSprite2D sprite;
 
-	private final StringName animUp100 = new StringName("Up100");
-	private final StringName animLeft100 = new StringName("Left100");
-	private final StringName animIdle100 = new StringName("Idle100");
-	private final StringName animUp70 = new StringName("Up70");
-	private final StringName animLeft70 = new StringName("Left70");
-	private final StringName animIdle70 = new StringName("Idle70");
-	private final StringName animUp35 = new StringName("Up35");
-	private final StringName animLeft35 = new StringName("Left35");
-	private final StringName animIdle35 = new StringName("Idle35");
+	// Indice 0 = vida alta (100), 1 = media (70), 2 = baja (35)
+	private final StringName[] animIdle = {
+			new StringName("Idle100"), new StringName("Idle70"), new StringName("Idle35")
+	};
+	private final StringName[] animLeft = {
+			new StringName("Left100"), new StringName("Left70"), new StringName("Left35")
+	};
+	private final StringName[] animUp = {
+			new StringName("Up100"), new StringName("Up70"), new StringName("Up35")
+	};
+	private final StringName[] animAtackLeft = {new StringName("AtackLeft100"), new StringName("AtackLeft70"),new StringName("AtackLeft35")};
+	private final StringName[] animAtackDown = {new StringName("AtackDown100"),new StringName("AtackDown70"),new StringName("AtackDown35")};
 
 	private final StringName left = new StringName("ui_left");
 	private final StringName right = new StringName("ui_right");
@@ -32,13 +35,17 @@ public class Potato extends CharacterBody2D {
 	private final StringName down = new StringName("ui_down");
 	private final StringName grupoPlayer = new StringName("player");
 
-	@Visible public double speed = 800.0;
+	@Visible public double speed = 800.0.7*(100-health);
 	@Visible public double health = 100;
 	@Visible public PackedScene escenaProyectil;
 	@Visible public String rutaProyectil = "res://Scenes/proyectil.tscn";
+	@Visible public double duracionAtaque = 0.3; // segundos que dura la animacion de ataque
+
 	private double tiempoInvulnerable = 0.0;
 	private double invulnerableTras = 0.5;
-	Vector2 dirBala;
+	private boolean atacando = false;
+	private double tiempoAtaque = 0.0;
+	
 
 	@Register
 	@Override
@@ -46,22 +53,22 @@ public class Potato extends CharacterBody2D {
 		addToGroup(grupoPlayer);
 		GD.print("Potato: _ready ejecutado, registrada en grupo 'player'");
 		GD.print("Potato: escenaProyectil " + (escenaProyectil == null
-				? "es NULL (el inspector no la entregó al juego)" : "OK, asignada"));
+				? "es NULL (el inspector no la entrego al juego)" : "OK, asignada"));
 		sprite = (AnimatedSprite2D) getNode(new NodePath("AnimatedSprite2D"));
 	}
+
 	@Register
 	public void recibirDanio(double cantidad) {
 		if (tiempoInvulnerable > 0) return;
 		health -= cantidad;
 		tiempoInvulnerable = invulnerableTras;
-		GD.print("Papa recibió " + cantidad + " de daño. Vida: " + health);
+		GD.print("Papa recibio " + cantidad + " de danio. Vida: " + health);
 
 		if (health <= 0) {
-			GD.print("La papa se murió :(");
+			GD.print("La papa se murio :(");
 			getTree().reloadCurrentScene();
 		}
 	}
-
 
 	@Register
 	@Override
@@ -72,6 +79,7 @@ public class Potato extends CharacterBody2D {
 			disparar();
 		}
 	}
+
 	private void disparar() {
 		if (escenaProyectil == null) {
 			// Plan B: cargar por ruta
@@ -80,7 +88,7 @@ public class Potato extends CharacterBody2D {
 				escenaProyectil = (PackedScene) r;
 				GD.print("Papa: bala cargada por ruta " + rutaProyectil);
 			} else {
-				GD.printErr("Papa: 'escenaProyectil' está vacía y no pude cargar '" + rutaProyectil
+				GD.printErr("Papa: 'escenaProyectil' esta vacia y no pude cargar '" + rutaProyectil
 						+ "'. Corrige 'rutaProyectil' en el inspector o arriba en Potato.java.");
 				return;
 			}
@@ -88,31 +96,31 @@ public class Potato extends CharacterBody2D {
 
 		Node instancia = escenaProyectil.instantiate();
 		if (!(instancia instanceof Node2D)) {
-			GD.printErr("Papa: la escena de la bala no tiene un Node2D/Area2D como raíz.");
+			GD.printErr("Papa: la escena de la bala no tiene un Node2D/Area2D como raiz.");
 			return;
 		}
 		Node2D bala = (Node2D) instancia;
 
 		Vector2 origen = getGlobalPosition();
-		dirBala = getGlobalMousePosition().minus(origen).normalized();
+		Vector2 dirBala = getGlobalMousePosition().minus(origen).normalized();
 
-		// La dirección se asigna ANTES de addChild, porque Projectile._ready()
+		// La direccion se asigna ANTES de addChild, porque Projectile._ready()
 		// usa "direction" para rotar el sprite.
 		boolean tieneScript = bala instanceof Projectile;
 		if (tieneScript) {
 			((Projectile) bala).direction = dirBala;
 		} else {
-			GD.printErr("Papa: la raíz de la escena de la bala NO tiene el script Projectile "
-					+ "(Game/Projectile). La bala saldrá pero no se moverá ni hará daño.");
+			GD.printErr("Papa: la raiz de la escena de la bala NO tiene el script Projectile "
+					+ "(Game/Projectile). La bala saldra pero no se movera ni hara danio.");
 		}
 
 		getParent().addChild(bala);
 		bala.setGlobalPosition(origen);
 		if (!tieneScript) bala.setGlobalRotation((float) dirBala.angle());
 
-		GD.print("Papa disparó desde " + origen + " hacia " + dirBala);
+		GD.print("Papa disparo desde " + origen + " hacia " + dirBala);
+		atacarSprite(dirBala);
 	}
-
 
 	@Register
 	@Override
@@ -126,7 +134,10 @@ public class Potato extends CharacterBody2D {
 			}
 		}
 
-		Vector2 vel = getVelocity();
+		if (atacando) {
+			tiempoAtaque -= delta;
+			if (tiempoAtaque <= 0) atacando = false;
+		}
 
 		double dirx = Input.getAxis(left, right);
 		double diry = Input.getAxis(up, down);
@@ -138,28 +149,42 @@ public class Potato extends CharacterBody2D {
 		setVelocity(new Vector2(dir.getX() * speed, dir.getY() * speed));
 		moveAndSlide();
 
+		// Mientras ataca, no se pisa la animacion de ataque con la de caminar
+		if (!atacando) actualizarAnimacion(dirx, diry);
+	}
 
-		if (dirx != 0 && (health>70 && health<=100)) {
+	// 0 = vida > 70, 1 = vida > 35, 2 = vida <= 35 (cubre todos los valores, sin huecos)
+	private int nivelVida() {
+		if (health > 70) return 0;
+		if (health > 35) return 1;
+		return 2;
+	}
+
+	private void actualizarAnimacion(double dirx, double diry) {
+		int n = nivelVida();
+		if (dirx != 0) {
 			sprite.setFlipH(dirx > 0);
-			sprite.play(animLeft100);
-		} else if (diry < 0 && (health>70 && health<=100)) {
-			sprite.play(animUp100);
-		} else if (health>70 && health<=100) {
-			sprite.play(animIdle100);
-		} else if (dirx != 0 && (health>35 && health<=70)) {
-			sprite.setFlipH(dirx > 0);
-			sprite.play(animLeft70);
-		} else if (diry < 0 && (health>40 && health<=70)) {
-			sprite.play(animUp70);
-		} else if (health>40 && health<=70) {
-			sprite.play(animIdle70);
-		}else if (dirx != 0 && (health>1 && health<=40)) {
-			sprite.setFlipH(dirx > 0);
-			sprite.play(animLeft35);
-		} else if (diry < 0 && (health>1 && health<=40)) {
-			sprite.play(animUp35);
-		} else if (health>1 && health<=40) {
-			sprite.play(animIdle35);
+			sprite.play(animLeft[n]);
+		} else if (diry < 0) {
+			sprite.play(animUp[n]);
+		} else {
+			sprite.play(animIdle[n]);
 		}
+	}
+
+	private void atacarSprite(Vector2 dir) {
+		boolean horizontal = Math.abs(dir.getX()) >= Math.abs(dir.getY());
+		if (horizontal) {
+			// AtackLeft mira a la izquierda; flip si apunta a la derecha
+			sprite.setFlipH(dir.getX() > 0);
+			sprite.play(animAtackLeft[nivelVida()]);
+		} else if (dir.getY() < 0) {
+			// Hacia arriba: se usa la animacion Up normal segun la vida actual
+			sprite.play(animUp[nivelVida()]);
+		} else {
+			sprite.play(animAtackDown[nivelVida()]);
+		}
+		atacando = true;
+		tiempoAtaque = duracionAtaque;
 	}
 }
