@@ -1,19 +1,16 @@
 [gd_scene format=3 uid="uid://du0xeg1anrm4x"]
 
-[ext_resource type="Texture2D" uid="uid://djwrd5nyj4ep2" path="res://Assets/Sprites/Characther/file_01m4hjk3hwrfnqzqk5wjnhrtwt .png" id="1_papa"]
 [ext_resource type="Script" uid="uid://go5amjxewdmt" path="res://src/main/java/Character/Potato.java" id="2_potato"]
+[ext_resource type="PackedScene" uid="uid://cm1g3mwijihs1" path="res://Scenes/enemigo.tscn" id="3_gqidu"]
 [ext_resource type="Script" uid="uid://cuxhed2hcm2oq" path="res://src/main/java/enemy/SpawnerEnemigos.java" id="3_spawner"]
 
 [sub_resource type="AtlasTexture" id="Atlas_p00"]
-atlas = ExtResource("1_papa")
 region = Rect2(0, 0, 532, 452)
 
 [sub_resource type="AtlasTexture" id="Atlas_p01"]
-atlas = ExtResource("1_papa")
 region = Rect2(532, 0, 532, 452)
 
 [sub_resource type="AtlasTexture" id="Atlas_p02"]
-atlas = ExtResource("1_papa")
 region = Rect2(1064, 0, 532, 452)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_papa"]
@@ -49,9 +46,6 @@ radius = 14.0
 
 [node name="Mundo" type="Node2D" unique_id=1955848383]
 
-[node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=1715436086]
-script = ExtResource("3_spawner")
-
 [node name="Potato" type="CharacterBody2D" parent="." unique_id=1617029262]
 motion_mode = 1
 script = ExtResource("2_potato")
@@ -66,3 +60,8 @@ shape = SubResource("CircleShape2D_papa")
 
 [node name="Camera2D" type="Camera2D" parent="Potato" unique_id=597910911]
 zoom = Vector2(2, 2)
+
+[node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=1715436086]
+script = ExtResource("3_spawner")
+
+[node name="Enemigo" parent="SpawnerEnemigos" unique_id=1608357195 instance=ExtResource("3_gqidu")]

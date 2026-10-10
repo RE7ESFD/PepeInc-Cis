@@ -2,6 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://dvja8w331hy6q" path="res://Scenes/potato.tscn" id="1_ci6au"]
 [ext_resource type="Texture2D" uid="uid://ceux0pqxdh6u8" path="res://icon.svg" id="2_26yhd"]
+[ext_resource type="PackedScene" uid="uid://cm1g3mwijihs1" path="res://Scenes/enemigo.tscn" id="3_myvm1"]
+[ext_resource type="PackedScene" uid="uid://8c0kdqin1cju" path="res://Scenes/proyectil.tscn" id="3_p3ir5"]
+[ext_resource type="PackedScene" uid="uid://2gjgxysesoon" path="res://Scenes/prueba.tscn" id="3_q0mm3"]
+[ext_resource type="Script" uid="uid://cuxhed2hcm2oq" path="res://src/main/java/enemy/SpawnerEnemigos.java" id="5_np2xp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_26yhd"]
 texture = ExtResource("2_26yhd")
@@ -82,3 +86,15 @@ tile_set = SubResource("TileSet_h4t55")
 [node name="Potato" parent="." unique_id=516425689 instance=ExtResource("1_ci6au")]
 
 [node name="Camera2D" type="Camera2D" parent="Potato" unique_id=563279956]
+zoom = Vector2(0.3, 0.3)
+
+[node name="Prueba" parent="Potato" unique_id=1228724603 instance=ExtResource("3_q0mm3")]
+position = Vector2(0, 0)
+
+[node name="Proyectil" parent="Potato" unique_id=1802031205 instance=ExtResource("3_p3ir5")]
+
+[node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=87447505]
+script = ExtResource("5_np2xp")
+
+[node name="Enemigo" parent="SpawnerEnemigos" unique_id=1608357195 instance=ExtResource("3_myvm1")]
+position = Vector2(496, -32)

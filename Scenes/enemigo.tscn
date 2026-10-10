@@ -1,11 +1,23 @@
 [gd_scene format=3 uid="uid://cm1g3mwijihs1"]
 
 [ext_resource type="Texture2D" uid="uid://dsfpbl04ba5uk" path="res://Assets/Sprites/Enemies/file_01m4hkbp6pjx2r36epm4aah008.png" id="1_7kcpm"]
-[ext_resource type="Texture2D" path="res://Assets/Sprites/Enemies/ataque_horno.png" id="3_ataque"]
-[ext_resource type="Script" path="res://src/main/java/enemy/Horno.java" id="2_horno"]
+[ext_resource type="Script" uid="uid://y3b0rjqliw6b" path="res://src/main/java/enemy/Horno.java" id="2_horno"]
+[ext_resource type="Texture2D" uid="uid://4fvk7yicgaeo" path="res://Assets/Sprites/Enemies/ataque_horno.png" id="3_ataque"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xnvsw"]
-size = Vector2(18, 18)
+size = Vector2(112, 120)
+
+[sub_resource type="AtlasTexture" id="Atlas_ataque0"]
+atlas = ExtResource("3_ataque")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Atlas_ataque1"]
+atlas = ExtResource("3_ataque")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Atlas_ataque2"]
+atlas = ExtResource("3_ataque")
+region = Rect2(512, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hlx46"]
 atlas = ExtResource("1_7kcpm")
@@ -63,18 +75,6 @@ region = Rect2(256, 768, 256, 256)
 atlas = ExtResource("1_7kcpm")
 region = Rect2(512, 768, 256, 256)
 
-[sub_resource type="AtlasTexture" id="Atlas_ataque0"]
-atlas = ExtResource("3_ataque")
-region = Rect2(0, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Atlas_ataque1"]
-atlas = ExtResource("3_ataque")
-region = Rect2(256, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Atlas_ataque2"]
-atlas = ExtResource("3_ataque")
-region = Rect2(512, 0, 256, 256)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_sqrl1"]
 resource_local_to_scene = true
 animations = [{
@@ -88,7 +88,7 @@ animations = [{
 "duration": 2.0,
 "texture": SubResource("Atlas_ataque2")
 }],
-"loop": false,
+"loop": 0,
 "name": &"ataque",
 "speed": 8.0
 }, {
@@ -146,27 +146,28 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nqfvd"]
-size = Vector2(24, 25)
+size = Vector2(112, 120)
 
 [node name="Enemigo" type="CharacterBody2D" unique_id=1608357195]
 collision_layer = 2
 collision_mask = 2
 motion_mode = 1
 script = ExtResource("2_horno")
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=581510335]
+position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_xnvsw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1788197623]
-scale = Vector2(0.13281253, 0.13085935)
+scale = Vector2(0.8, 0.788)
 sprite_frames = SubResource("SpriteFrames_sqrl1")
 animation = &"walking"
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1142239063]
 collision_layer = 0
-collision_mask = 1
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=5162242]
-position = Vector2(0, 1.5)
+position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_nqfvd")
