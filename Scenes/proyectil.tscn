@@ -1,12 +1,10 @@
 [gd_scene format=3 uid="uid://8c0kdqin1cju"]
 
 [ext_resource type="Script" uid="uid://dk6bv6xokpkos" path="res://src/main/java/Game/Projectile.java" id="1_mnr2y"]
+[ext_resource type="Texture2D" uid="uid://b6oprfp3gbtyo" path="res://Assets/Sprites/Characther/proyectil.png" id="2_qpc1d"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bg2bl"]
-load_path = "res://.godot/imported/fuego.png-0ef16e70e5686b34094bda19a7c734ca.ctex"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_bg2bl"]
-radius = 70.00714
+[sub_resource type="CircleShape2D" id="CircleShape2D_qpc1d"]
+radius = 57.00877
 
 [node name="Proyectil" type="Area2D" unique_id=1802031205]
 collision_mask = 2
@@ -14,12 +12,13 @@ script = ExtResource("1_mnr2y")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1869390667]
-scale = Vector2(0.47164947, 0.44329897)
-texture = SubResource("CompressedTexture2D_bg2bl")
+position = Vector2(28.999985, 0)
+scale = Vector2(0.26988634, 0.29962683)
+texture = ExtResource("2_qpc1d")
 region_rect = Rect2(-16, -10, 183.604, 167.495)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1969398878]
-shape = SubResource("CircleShape2D_bg2bl")
+shape = SubResource("CircleShape2D_qpc1d")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=740047147]
 position = Vector2(-56, -40)
