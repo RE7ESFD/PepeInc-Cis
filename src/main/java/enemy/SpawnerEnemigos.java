@@ -12,7 +12,7 @@ import godot.core.Vector2;
 import godot.global.GD;
 
 /**
- * Spawnea enemigos en un anillo alrededor de la papa.
+ * Spawnea enemigos (hornos y fueguitos) en un anillo alrededor de la papa.
  * Cada vez spawnea más rápido y los enemigos salen más fuertes (roguelike puro).
  * Ponerlo como un Node2D dentro de la escena principal.
  */
@@ -23,6 +23,7 @@ public class SpawnerEnemigos extends Node2D {
 	@Visible public double intervaloMinimo = 0.5;   // lo más rápido que puede llegar
 	@Visible public double reduccionPorSegundo = 0.0001;
 	@Visible public double radioSpawn = 1800.0;      // distancia a la papa donde aparecen
+	@Visible public double probabilidadFueguito = 0.6; // 0.0 = solo hornos, 1.0 = solo fueguitos
 
 	// Bordes de la arena (por dentro de los muros de map.tscn) para no spawnear afuera
 	@Visible public double arenaMinX = -3650.0;
@@ -31,7 +32,11 @@ public class SpawnerEnemigos extends Node2D {
 	@Visible public double arenaMaxY = 1840.0;
 	@Visible public int maxEnemigos = 150;
 
-	private PackedScene escenaEnemigo;
+	private static final String RUTA_HORNO = "res://Scenes/enemigo.tscn";
+	private static final String RUTA_FUEGUITO = "res://Scenes/fueguito.tscn";
+
+	private PackedScene escenaHorno;
+	private PackedScene escenaFueguito;
 	private double intervaloActual;
 	private double contador = 0.0;
 	private double tiempoVivo = 0.0;
@@ -44,10 +49,16 @@ public class SpawnerEnemigos extends Node2D {
 	@Register
 	@Override
 	public void _ready() {
-		escenaEnemigo = (PackedScene) ResourceLoader.load("res://Scenes/enemigo.tscn");
-		if (escenaEnemigo == null) {
-			GD.printErr("SpawnerEnemigos: no se pudo cargar res://Scenes/enemigo.tscn "
-					+ "(revisa que existan todos los sprites que usa la escena). Spawner apagado.");
+		escenaHorno = (PackedScene) ResourceLoader.load(RUTA_HORNO);
+		escenaFueguito = (PackedScene) ResourceLoader.load(RUTA_FUEGUITO);
+		if (escenaHorno == null) {
+			GD.printErr("SpawnerEnemigos: no se pudo cargar " + RUTA_HORNO + " (no saldrán hornos).");
+		}
+		if (escenaFueguito == null) {
+			GD.printErr("SpawnerEnemigos: no se pudo cargar " + RUTA_FUEGUITO + " (no saldrán fueguitos).");
+		}
+		if (escenaHorno == null && escenaFueguito == null) {
+			GD.printErr("SpawnerEnemigos: no hay ninguna escena de enemigo. Spawner apagado.");
 			setProcess(false);
 		}
 		intervaloActual = intervaloInicial;
@@ -64,6 +75,13 @@ public class SpawnerEnemigos extends Node2D {
 			contador = 0.0;
 			spawnear();
 		}
+	}
+
+	/** Elige qué escena spawnear según probabilidadFueguito (si falta una, usa la otra). */
+	private PackedScene elegirEscena() {
+		if (escenaFueguito == null) return escenaHorno;
+		if (escenaHorno == null) return escenaFueguito;
+		return Math.random() < probabilidadFueguito ? escenaFueguito : escenaHorno;
 	}
 
 	private void spawnear() {
@@ -86,20 +104,24 @@ public class SpawnerEnemigos extends Node2D {
 				Math.max(arenaMinX, Math.min(arenaMaxX, pos.getX())),
 				Math.max(arenaMinY, Math.min(arenaMaxY, pos.getY())));
 
-		Node instancia = escenaEnemigo.instantiate();
+		PackedScene escena = elegirEscena();
+		Node instancia = escena.instantiate();
 		if (!(instancia instanceof Node2D)) {
-			GD.printErr("SpawnerEnemigos: la raíz de enemigo.tscn no es un Node2D/CharacterBody2D.");
-			setProcess(false);
+			GD.printErr("SpawnerEnemigos: la raíz de la escena de enemigo no es un Node2D/CharacterBody2D.");
+			instancia.queueFree();
 			return;
 		}
 
+		// +10% de vida y daño por cada 30 segundos que lleves vivo
+		double multiplicador = 1.0 + (tiempoVivo / 30.0) * 0.10;
 		if (instancia instanceof Horno) {
-			// +10% de vida y daño por cada 30 segundos que lleves vivo
-			((Horno) instancia).escalar(1.0 + (tiempoVivo / 30.0) * 0.10);
+			((Horno) instancia).escalar(multiplicador);
+		} else if (instancia instanceof Fueguito) {
+			((Fueguito) instancia).escalar(multiplicador);
 		} else if (!avisoSinScript) {
 			avisoSinScript = true;
-			GD.printErr("SpawnerEnemigos: la raíz de enemigo.tscn NO tiene el script Horno "
-					+ "(enemy/Horno). El enemigo aparecerá pero no se moverá.");
+			GD.printErr("SpawnerEnemigos: la raíz de una escena de enemigo NO tiene el script Horno ni Fueguito. "
+					+ "El enemigo aparecerá pero no se moverá.");
 		}
 
 		getParent().addChild(instancia);
@@ -107,4 +129,3 @@ public class SpawnerEnemigos extends Node2D {
 	}
 
 }
-
