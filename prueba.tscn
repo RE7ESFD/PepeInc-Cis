@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://2gjgxysesoon"]
+
+[ext_resource type="Script" uid="uid://c8eh0uayhd7kt" path="res://prueba.gd" id="1_mt5rx"]
+[ext_resource type="PackedScene" uid="uid://8c0kdqin1cju" path="res://proyectil.tscn" id="2_rcdd3"]
+
+[node name="Prueba" type="Node2D" unique_id=1228724603]
+position = Vector2(2, -13)
+script = ExtResource("1_mt5rx")
+escena_proyectil = ExtResource("2_rcdd3")
