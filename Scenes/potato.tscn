@@ -34,11 +34,24 @@
 [ext_resource type="Texture2D" uid="uid://c2bgh14v3btkj" path="res://Assets/Sprites/Characther/50% izquierda 3.png" id="19_4b5ue"]
 [ext_resource type="Texture2D" uid="uid://bjwey6wpivlk7" path="res://Assets/Sprites/Characther/arriba 3 35.png" id="19_7jwm1"]
 [ext_resource type="Texture2D" uid="uid://cep35nxacvc4h" path="res://Assets/Sprites/Characther/50% boca abierta izquierda 3.png" id="19_r1ewl"]
+[ext_resource type="Texture2D" uid="uid://d0ytsql3jygw3" path="res://Assets/Sprites/Characther/muerte 1.png" id="20_3eggr"]
 [ext_resource type="Texture2D" uid="uid://cs8msaqwfm4mg" path="res://Assets/Sprites/Characther/100.png" id="20_kgn00"]
+[ext_resource type="Texture2D" uid="uid://c8h3lg7tk84tg" path="res://Assets/Sprites/Characther/muerte 2.png" id="21_txypg"]
+[ext_resource type="Texture2D" uid="uid://ursw3pxk3gxm" path="res://Assets/Sprites/Characther/muerte 3.png" id="22_oeyka"]
+[ext_resource type="Texture2D" uid="uid://hxkt2oldjung" path="res://Assets/Sprites/Characther/muerte 4.png" id="23_ft0fv"]
+[ext_resource type="Texture2D" uid="uid://bntav20viq1fo" path="res://Assets/Sprites/Characther/muerte 5.png" id="24_r1ewl"]
+[ext_resource type="Texture2D" uid="uid://cosy6t73i7jdp" path="res://Assets/Sprites/Characther/muerte 6.png" id="25_hw6po"]
 [ext_resource type="Texture2D" uid="uid://c146gxtkxumo8" path="res://Assets/Sprites/Characther/50% arriba 1.png" id="26_6kye7"]
+[ext_resource type="Texture2D" uid="uid://ben388pcwbcoa" path="res://Assets/Sprites/Characther/muerte 7.png" id="26_hsdi7"]
+[ext_resource type="Texture2D" uid="uid://k5xelm46oddi" path="res://Assets/Sprites/Characther/muerte 8.png" id="27_i462m"]
 [ext_resource type="Texture2D" uid="uid://4vgujum8b34s" path="res://Assets/Sprites/Characther/50% arriba 2.png" id="27_jgn4a"]
 [ext_resource type="Texture2D" uid="uid://c5yrrbdi866m0" path="res://Assets/Sprites/Characther/50% arriba 3.png" id="28_by1m6"]
+[ext_resource type="Texture2D" uid="uid://dec8et83elp32" path="res://Assets/Sprites/Characther/muerte 9.png" id="28_pxe7e"]
+[ext_resource type="Texture2D" uid="uid://bdny4d4ulfht2" path="res://Assets/Sprites/Characther/muerte 10.png" id="29_eh6yl"]
+[ext_resource type="Texture2D" uid="uid://n6ol1j11dkqn" path="res://Assets/Sprites/Characther/muerte 11.png" id="30_5nlcw"]
+[ext_resource type="Texture2D" uid="uid://c5j2gsdkpwdbs" path="res://Assets/Sprites/Characther/muerte 12.png" id="31_4w5fq"]
 [ext_resource type="AudioStream" uid="uid://cw3jr8x4y1c7k" path="res://Assets/Audios/PotatoDamage.mp3" id="32_hrlre"]
+[ext_resource type="Texture2D" uid="uid://b6oprfp3gbtyo" path="res://Assets/Sprites/Characther/proyectil.png" id="32_qghgb"]
 [ext_resource type="AudioStream" uid="uid://dhsji305wqqgg" path="res://Assets/Audios/PotatoDeath.wav" id="33_4b5ue"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sy2vk"]
@@ -161,6 +174,50 @@ animations = [{
 }],
 "loop": 1,
 "name": &"AtackLeft70",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_3eggr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_txypg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_oeyka")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_ft0fv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_r1ewl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_hw6po")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_hsdi7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_i462m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_pxe7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_eh6yl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_5nlcw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_4w5fq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_qghgb")
+}],
+"loop": 1,
+"name": &"Death",
 "speed": 5.0
 }, {
 "frames": [{
@@ -299,7 +356,7 @@ script = ExtResource("1_d4g48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1561015967]
 sprite_frames = SubResource("SpriteFrames_8w0r3")
-animation = &"Up100"
+animation = &"Death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=345451347]
 position = Vector2(0, 1)

@@ -5,6 +5,8 @@ import godot.annotation.Register;
 import godot.annotation.Script;
 import godot.annotation.Visible;
 import godot.api.*;
+import godot.core.Error;
+import godot.core.Key;
 
 import godot.core.MouseButton;
 import godot.core.NodePath;
@@ -47,6 +49,7 @@ public class Potato extends CharacterBody2D {
 	private final StringName right = new StringName("ui_right");
 	private final StringName up = new StringName("ui_up");
 	private final StringName down = new StringName("ui_down");
+	private final StringName esc = new StringName("pausa");
 	private final StringName grupoPlayer = new StringName("player");
 
 	// ---------- ESTADO ----------
@@ -91,7 +94,15 @@ public class Potato extends CharacterBody2D {
 	@Register
 	@Override
 	public void _input(InputEvent event) {
+		if (event instanceof InputEventKey k && k.isPressed()) {
+			GD.print("Tecla: " + k.getKeycode() + " | esc? " + event.isActionPressed(esc));
+		}
 		if (muerto) return;
+		if (event.isActionPressed(esc)) {
+			GD.print("Escape detectado, cambiando escena...");
+			Error e = getTree().changeSceneToFile("res://Scenes/canvas_layer.tscn");
+			GD.print("Resultado: " + e);
+		}
 		if (event instanceof InputEventMouseButton click
 				&& click.getButtonIndex() == MouseButton.LEFT
 				&& click.isPressed()) {
