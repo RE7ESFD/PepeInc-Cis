@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://dvja8w331hy6q" path="res://Scenes/potato.tscn" id="1_ci6au"]
 [ext_resource type="Texture2D" uid="uid://ceux0pqxdh6u8" path="res://icon.svg" id="2_26yhd"]
-[ext_resource type="PackedScene" uid="uid://cm1g3mwijihs1" path="res://Scenes/enemigo.tscn" id="3_myvm1"]
 [ext_resource type="Script" uid="uid://cuxhed2hcm2oq" path="res://src/main/java/enemy/SpawnerEnemigos.java" id="5_np2xp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_26yhd"]
@@ -89,6 +88,3 @@ position_smoothing_enabled = true
 
 [node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=87447505]
 script = ExtResource("5_np2xp")
-
-[node name="Enemigo" parent="SpawnerEnemigos" unique_id=1608357195 instance=ExtResource("3_myvm1")]
-position = Vector2(496, -32)
