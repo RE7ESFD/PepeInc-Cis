@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://du0xeg1anrm4x"]
+
+[ext_resource type="Script" uid="uid://go5amjxewdmt" path="res://src/main/java/Character/Potato.java" id="2_potato"]
+[ext_resource type="PackedScene" uid="uid://cm1g3mwijihs1" path="res://Scenes/enemigo.tscn" id="3_gqidu"]
+[ext_resource type="Script" uid="uid://cuxhed2hcm2oq" path="res://src/main/java/enemy/SpawnerEnemigos.java" id="3_spawner"]
+
+[sub_resource type="AtlasTexture" id="Atlas_p00"]
+region = Rect2(0, 0, 532, 452)
+
+[sub_resource type="AtlasTexture" id="Atlas_p01"]
+region = Rect2(532, 0, 532, 452)
+
+[sub_resource type="AtlasTexture" id="Atlas_p02"]
+region = Rect2(1064, 0, 532, 452)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_papa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_p00")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_p01")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_p00")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_p01")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_p02")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_papa"]
+radius = 14.0
+
+[node name="Mundo" type="Node2D" unique_id=1955848383]
+
+[node name="Potato" type="CharacterBody2D" parent="." unique_id=1617029262]
+motion_mode = 1
+script = ExtResource("2_potato")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Potato" unique_id=2022902971]
+scale = Vector2(0.08, 0.08)
+sprite_frames = SubResource("SpriteFrames_papa")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Potato" unique_id=1852753778]
+shape = SubResource("CircleShape2D_papa")
+
+[node name="Camera2D" type="Camera2D" parent="Potato" unique_id=597910911]
+zoom = Vector2(2, 2)
+
+[node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=1715436086]
+script = ExtResource("3_spawner")
+
+[node name="Enemigo" parent="SpawnerEnemigos" unique_id=1608357195 instance=ExtResource("3_gqidu")]
