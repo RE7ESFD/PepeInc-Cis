@@ -4,11 +4,7 @@ import Character.Potato;
 import godot.annotation.Register;
 import godot.annotation.Script;
 import godot.annotation.Visible;
-import godot.api.AnimatedSprite2D;
-import godot.api.Area2D;
-import godot.api.CharacterBody2D;
-import godot.api.Node;
-import godot.api.Node2D;
+import godot.api.*;
 import godot.core.Color;
 import godot.core.NodePath;
 import godot.core.StringName;
@@ -37,7 +33,7 @@ public class Horno extends CharacterBody2D {
 	private final StringName grupoPlayer = new StringName("player");
 	private final StringName grupoEnemigos = new StringName("enemigos");
 
-	// --- NUEVAS ANIMACIONES DIRECCIONALES ---
+		// --- NUEVAS ANIMACIONES DIRECCIONALES ---
 	private final StringName animWalkDown = new StringName("walk_down");
 	private final StringName animWalkUp = new StringName("walk_up");
 	private final StringName animWalkLeft = new StringName("walk_left");
@@ -49,6 +45,7 @@ public class Horno extends CharacterBody2D {
 
 	private final Color colorNormal = new Color(1.0, 1.0, 1.0, 1.0);
 	private final Color colorGolpe = new Color(1.0, 0.35, 0.35, 1.0);
+	private AudioStreamPlayer Horn;
 
 	@Register
 	@Override
@@ -58,6 +55,8 @@ public class Horno extends CharacterBody2D {
 		vida = vidaMax;
 		addToGroup(grupoEnemigos);
 		if (sprite != null) sprite.play(ultimaAnimacion);
+		Horn = (AudioStreamPlayer) getNode(new NodePath("Horn"));
+
 	}
 
 	@Register
@@ -155,6 +154,7 @@ public class Horno extends CharacterBody2D {
 	@Register
 	public void recibirDanio(double cantidad) {
 		if (muerto) return;
+		Horn.play();
 		vida -= cantidad;
 		tiempoFlash = 0.1;
 		if (sprite != null) sprite.setModulate(colorGolpe);
