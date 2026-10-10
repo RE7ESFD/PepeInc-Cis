@@ -25,7 +25,7 @@ public class Potato extends CharacterBody2D {
 	private final StringName up = new StringName("ui_up");
 	private final StringName down = new StringName("ui_down");
 
-	@Visible public double speed = 110.0;
+	@Visible public double speed = 500.0;
 
 	@Register
 	@Override
@@ -37,10 +37,6 @@ public class Potato extends CharacterBody2D {
 	@Override
 	public void _physicsProcess(double delta) {
 		GD.print("physics tick");
-		Vector2 vel = getVelocity();
-		double vx = vel.getX();
-		double vy = vel.getY();
-
 		double dirx = Input.getAxis(left, right);
 		double diry = Input.getAxis(up, down);
 		Vector2 dir = new Vector2(dirx, diry);
@@ -50,10 +46,9 @@ public class Potato extends CharacterBody2D {
 
 		setVelocity(new Vector2(dir.getX() * speed, dir.getY() * speed));
 		moveAndSlide();
-		
 
 		if (dirx != 0) {
-			sprite.setFlipH(dirx < 0);   // si tu sprite "Left" mira a la izquierda, usa dirx > 0
+			sprite.setFlipH(dirx < 0);
 			sprite.play(animLeft);
 		} else if (diry != 0) {
 			sprite.play(animUp);
