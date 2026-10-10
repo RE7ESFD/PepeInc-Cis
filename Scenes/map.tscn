@@ -16830,6 +16830,3 @@ position_smoothing_enabled = true
 
 [node name="SpawnerEnemigos" type="Node2D" parent="." unique_id=87447505]
 script = ExtResource("5_np2xp")
-
-[node name="Enemigo" parent="SpawnerEnemigos" unique_id=1608357195 instance=ExtResource("3_myvm1")]
-position = Vector2(496, -32)
