@@ -114,11 +114,21 @@ public class Horno extends CharacterBody2D {
 		}
 	}
 
+	private boolean ejeHorizontal = false;
+
 	private void orientar(Vector2 dir) {
-		if (Math.abs(dir.getX()) > Math.abs(dir.getY())) {
-			animCaminar = dir.getX() < 0 ? animWalkLeft : animWalkRight;
-		} else {
-			animCaminar = dir.getY() < 0 ? animWalkUp : animWalkDown;
+		double ax = Math.abs(dir.getX());
+		double ay = Math.abs(dir.getY());
+		if (ejeHorizontal && ay > ax * 1.3) ejeHorizontal = false;
+		else if (!ejeHorizontal && ax > ay * 1.3) ejeHorizontal = true;
+
+		StringName nueva;
+		if (ejeHorizontal) nueva = dir.getX() < 0 ? animWalkLeft : animWalkRight;
+		else nueva = dir.getY() < 0 ? animWalkUp : animWalkDown;
+
+		if (nueva != animCaminar) {
+			animCaminar = nueva;
+			GD.print("Horno anim -> " + animCaminar);
 		}
 	}
 
