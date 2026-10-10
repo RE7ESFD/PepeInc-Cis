@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://du0koc5sv45l2"]
+
+[ext_resource type="Script" uid="uid://m5y4wjpxymm" path="res://Scenes/CanvasLayer.java" id="1_5oaki"]
+
+[node name="Pause menu" type="CanvasLayer" unique_id=1065033823]
+script = ExtResource("1_5oaki")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2069855274]
+offset_right = 1156.0
+offset_bottom = 323.0
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=833822014]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=622329827]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=1625485719]
+layout_mode = 2
+
+[node name="Button3" type="Button" parent="VBoxContainer" unique_id=874457573]
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="onContinuar"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="onReintentar"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="onSalir"]

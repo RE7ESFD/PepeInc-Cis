@@ -1,0 +1,172 @@
+[gd_scene format=3 uid="uid://ct8lrb73e1r12"]
+
+[ext_resource type="Texture2D" uid="uid://cotnjj2ldgnqe" path="res://Assets/Sprites/Enemies/fueguito_sheet.png" id="1_fueguito"]
+[ext_resource type="Texture2D" uid="uid://dqjefiyvtg62f" path="res://Assets/Sprites/Enemies/Fueguito.png" id="2_78gga"]
+[ext_resource type="Script" uid="uid://cnucy5h4lncon" path="res://src/main/java/enemy/Fueguito.java" id="2_fueguito"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkpwj"]
+atlas = ExtResource("2_78gga")
+region = Rect2(179, 184, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_geqm5"]
+atlas = ExtResource("2_78gga")
+region = Rect2(0, 368, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_16jrk"]
+atlas = ExtResource("2_78gga")
+region = Rect2(179, 368, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4n7c"]
+atlas = ExtResource("2_78gga")
+region = Rect2(358, 552, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y1mal"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(0, 0, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_waprs"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(179, 0, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dgdpx"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(358, 0, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yrj12"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(0, 552, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s35m3"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(179, 552, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lp3f"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(358, 552, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7ako"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(0, 368, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k6ns0"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(179, 368, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cq8j"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(358, 368, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21v5g"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(0, 184, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owqen"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(179, 184, 179, 184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tk40f"]
+atlas = ExtResource("1_fueguito")
+region = Rect2(358, 184, 179, 184)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fueguito"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkpwj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_geqm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_16jrk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a4n7c")
+}],
+"loop": 1,
+"name": &"fuego",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y1mal")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_waprs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dgdpx")
+}],
+"loop": 1,
+"name": &"walk_down",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yrj12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s35m3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8lp3f")
+}],
+"loop": 1,
+"name": &"walk_left",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e7ako")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k6ns0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5cq8j")
+}],
+"loop": 1,
+"name": &"walk_right",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21v5g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owqen")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tk40f")
+}],
+"loop": 1,
+"name": &"walk_up",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gm303"]
+radius = 62.03225
+
+[node name="Fueguito" type="CharacterBody2D" unique_id=2146605125]
+collision_layer = 2
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("2_fueguito")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=310130193]
+position = Vector2(10.199999, -11.699994)
+scale = Vector2(0.9139664, 0.9271738)
+sprite_frames = SubResource("SpriteFrames_fueguito")
+animation = &"walk_up"
+
+[node name="Fuego" type="AnimatedSprite2D" parent="." unique_id=1936453111]
+z_index = 1
+position = Vector2(4.999998, -23.812498)
+scale = Vector2(1.0754191, 1.1650815)
+sprite_frames = SubResource("SpriteFrames_fueguito")
+animation = &"fuego"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=441029103]
+position = Vector2(0, 8)
+shape = SubResource("CircleShape2D_gm303")

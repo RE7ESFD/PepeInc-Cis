@@ -1,52 +1,64 @@
 package enemy;
 
-import Character.Potato;
 import godot.annotation.Register;
 import godot.annotation.Script;
 import godot.annotation.Visible;
 import godot.api.AnimatedSprite2D;
-import godot.api.Area2D;
+import godot.api.AudioStreamPlayer;
 import godot.api.CharacterBody2D;
 import godot.api.Node;
 import godot.api.Node2D;
+import godot.api.PackedScene;
+import godot.api.ResourceLoader;
 import godot.core.Color;
 import godot.core.NodePath;
 import godot.core.StringName;
 import godot.core.Vector2;
-import godot.core.VariantArray;
+import godot.global.GD;
 
 /**
- * Enemigo básico tipo Brotato: persigue a la papa y cuando la alcanza
- * se frena, abre la puerta del horno (animación "ataque") y le pega.
- * Escena: res://Scenes/enemigo.tscn
- * Nodos hijos que necesita: "AnimatedSprite2D" y "Hitbox" (Area2D).
+ * Enemigo Horno a distancia: camina hacia la papa hasta quedar a "rangoDisparo",
+ * se frena, abre la puerta (animación "ataque") y escupe una bola de fuego.
+ * Escena: res://Scenes/enemigo.tscn  (necesita un hijo "AnimatedSprite2D"; "Horn" es opcional)
+ * El nodo "Hitbox" de la escena ya no se usa (era del Horno cuerpo a cuerpo).
  */
 @Script
 public class Horno extends CharacterBody2D {
 
-	// ---- Stats (se pueden cambiar desde el inspector de Godot) ----
-	@Visible public double vidaMax = 30.0;
-	@Visible public double velocidad = 60.0;
-	@Visible public double danio = 10.0;
-	@Visible public double tiempoEntreAtaques = 0.8; // descanso después de cada ataque
-	@Visible public int frameDelGolpe = 2;           // en qué frame de "ataque" se hace el daño
+	@Visible public double vidaMax = 20.0;
+	@Visible public double velocidad = 220.0;
+	@Visible public double danioProyectil = 12.0;
+	@Visible public double rangoDisparo = 1000.0;   // a esta distancia se frena y dispara
+	@Visible public double cadenciaDisparo = 3.0;   // segundos entre disparos
+	@Visible public int frameDelDisparo = 2;        // frame de "ataque" en el que sale la bala
 
-	// ---- Estado interno ----
+	private static final String RUTA_PROYECTIL = "res://Scenes/proyectil_enemigo.tscn";
+
 	private double vida;
-	private double cooldownAtaque = 0.0;
+	private double cooldownDisparo = 0.0;
 	private double tiempoFlash = 0.0;
 	private boolean muerto = false;
 	private boolean atacando = false;
-	private boolean golpeHecho = false;
+	private boolean disparoHecho = false;
 
 	private AnimatedSprite2D sprite;
-	private Area2D hitbox;
+	private AudioStreamPlayer horn;       // sonido al recibir golpe (opcional)
+	private PackedScene escenaProyectil;
 
 	private final StringName grupoPlayer = new StringName("player");
 	private final StringName grupoEnemigos = new StringName("enemigos");
-	private final StringName animIdle = new StringName("idle");
-	private final StringName animWalk = new StringName("walking");
-	private final StringName animAtaque = new StringName("ataque");
+
+	private static final boolean INVERTIR_HORIZONTAL = false;
+
+	private final StringName animWalkLeft  = new StringName("walk_left");   // tus nombres reales
+	private final StringName animWalkRight = new StringName("walk_right");
+	private final StringName animWalkUp    = new StringName("walk_up");
+	private final StringName animWalkDown  = new StringName("walk_down");
+	private final StringName anSimAtaque = new StringName("ataque");   // nombre exacto de tu SpriteFrames
+
+	private StringName animCaminar = animWalkDown;
+	private boolean ejeHorizontal = true;
+	private double bloqueoAnim = 0.0;
 
 	private final Color colorNormal = new Color(1.0, 1.0, 1.0, 1.0);
 	private final Color colorGolpe = new Color(1.0, 0.35, 0.35, 1.0);
@@ -55,10 +67,19 @@ public class Horno extends CharacterBody2D {
 	@Override
 	public void _ready() {
 		sprite = (AnimatedSprite2D) getNode(new NodePath("AnimatedSprite2D"));
-		hitbox = (Area2D) getNode(new NodePath("Hitbox"));
+		Node nodoHorn = getNodeOrNull(new NodePath("Horn"));
+		if (nodoHorn instanceof AudioStreamPlayer) horn = (AudioStreamPlayer) nodoHorn;
 		vida = vidaMax;
 		addToGroup(grupoEnemigos);
-		sprite.play(animWalk);
+
+		escenaProyectil = (PackedScene) ResourceLoader.load(RUTA_PROYECTIL);
+		if (escenaProyectil == null) {
+			GD.printErr("Horno: no se pudo cargar " + RUTA_PROYECTIL + " (el horno no va a disparar).");
+		}
+		// Arranca en un punto distinto de la recarga para que no disparen todos a la vez
+		cooldownDisparo = Math.random() * cadenciaDisparo;
+
+		sprite.play(animCaminar);
 	}
 
 	@Register
@@ -66,76 +87,112 @@ public class Horno extends CharacterBody2D {
 	public void _physicsProcess(double delta) {
 		if (muerto) return;
 
-		if (cooldownAtaque > 0) cooldownAtaque -= delta;
+		if (cooldownDisparo > 0) cooldownDisparo -= delta;
 		actualizarFlash(delta);
 
 		if (atacando) {
-			procesarAtaque();
+			procesarDisparo();
 			return;
 		}
 
 		Node2D papa = buscarPapa();
 		if (papa == null) {
-			// No hay papa (murió o no está en la escena): quieto
 			setVelocity(new Vector2(0.0, 0.0));
-			sprite.play(animIdle);
+			sprite.stop();
 			return;
 		}
 
-		// Si la papa está dentro del Hitbox y ya pasó el descanso -> atacar
-		if (cooldownAtaque <= 0 && papaEnHitbox() != null) {
+		Vector2 haciaPapa = papa.getGlobalPosition().minus(getGlobalPosition());
+		double distancia = haciaPapa.length();
+		Vector2 dir = haciaPapa.normalized();
+		orientar(dir);
+
+		if (distancia > rangoDisparo) {
+			// Lejos: camina hacia la papa
+			setVelocity(dir.times(velocidad));
+			moveAndSlide();
+			sprite.play(animCaminar);
+		} else if (cooldownDisparo <= 0) {
+			// En rango y recargado: dispara
 			empezarAtaque();
-			return;
+		} else {
+			// En rango pero recargando: se queda quieto mirando a la papa
+			setVelocity(new Vector2(0.0, 0.0));
+			sprite.play(animCaminar);
+			sprite.stop();
+		}
+	}
+
+	private void orientar(Vector2 dir) {
+		double ax = Math.abs(dir.getX());
+		double ay = Math.abs(dir.getY());
+		if (ax < 0.001 && ay < 0.001) return;   // quieto: conserva la animacion actual
+
+		// Histeresis: solo cambia de eje si el otro gana por mas de un 30%
+		if (ejeHorizontal && ay > ax * 1.3) ejeHorizontal = false;
+		else if (!ejeHorizontal && ax > ay * 1.3) ejeHorizontal = true;
+
+		StringName nueva;
+		if (ejeHorizontal) {
+			boolean haciaDerecha = dir.getX() > 0;
+			if (INVERTIR_HORIZONTAL) haciaDerecha = !haciaDerecha;
+			nueva = haciaDerecha ? animWalkRight : animWalkLeft;
+		} else {
+			nueva = dir.getY() > 0 ? animWalkDown : animWalkUp;
 		}
 
-		// Perseguir a la papa
-		Vector2 dir = getGlobalPosition().directionTo(papa.getGlobalPosition());
-		setVelocity(dir.times(velocidad));
-		moveAndSlide();
-
-		if (dir.getX() != 0) sprite.setFlipH(dir.getX() < 0);
-		sprite.play(animWalk);
+		// Solo cambia si es distinta Y ya paso el bloqueo. Aqui (y solo aqui) se reproduce.
+		if (nueva != animCaminar && bloqueoAnim <= 0) {
+			animCaminar = nueva;
+			bloqueoAnim = 0.2;                 // segundos que se mantiene
+			sprite.play(animCaminar);
+			GD.print("Horno anim -> " + animCaminar);
+		}
 	}
 
 	// ------------------------------------------------------------------
-	// Ataque
+	// Disparo
 	// ------------------------------------------------------------------
 
 	private void empezarAtaque() {
 		atacando = true;
-		golpeHecho = false;
+		disparoHecho = false;
 		setVelocity(new Vector2(0.0, 0.0));
-		sprite.play(animAtaque); // la animación "ataque" NO hace loop
+		sprite.play(anSimAtaque); // "ataque" no hace loop
 	}
 
-	private void procesarAtaque() {
-		// El daño se hace en un frame concreto (cuando sale el fuego),
-		// y solo si la papa sigue cerca: si alcanzó a esquivar, no le pega.
-		if (!golpeHecho && sprite.getFrame() >= frameDelGolpe) {
-			golpeHecho = true;
-			Potato papa = papaEnHitbox();
-			if (papa != null) papa.recibirDanio(danio);
+	private void procesarDisparo() {
+		// La bala sale en el frame del fuego, apuntando a donde esté la papa en ese momento
+		if (!disparoHecho && sprite.getFrame() >= frameDelDisparo) {
+			disparoHecho = true;
+			Node2D papa = buscarPapa();
+			if (papa != null) lanzarProyectil(papa);
 		}
 
-		// Cuando la animación termina, vuelve a caminar
 		if (!sprite.isPlaying()) {
 			atacando = false;
-			cooldownAtaque = tiempoEntreAtaques;
-			sprite.play(animWalk);
+			cooldownDisparo = cadenciaDisparo;
+			sprite.play(animCaminar);
 		}
 	}
 
-	/** Devuelve la papa si está dentro del Hitbox, si no null. */
-	private Potato papaEnHitbox() {
-		VariantArray<Node2D> cuerpos = hitbox.getOverlappingBodies();
-		for (int i = 0; i < cuerpos.size(); i++) {
-			Node2D cuerpo = cuerpos.get(i);
-			if (cuerpo instanceof Potato) return (Potato) cuerpo;
+	private void lanzarProyectil(Node2D papa) {
+		if (escenaProyectil == null) return;
+
+		Node inst = escenaProyectil.instantiate();
+		if (!(inst instanceof ProyectilEnemigo)) {
+			GD.printErr("Horno: la raíz de proyectil_enemigo.tscn no tiene el script ProyectilEnemigo.");
+			inst.queueFree();
+			return;
 		}
-		return null;
+		ProyectilEnemigo bala = (ProyectilEnemigo) inst;
+		bala.direccion = papa.getGlobalPosition().minus(getGlobalPosition()).normalized();
+		bala.danio = danioProyectil;
+
+		getParent().addChild(bala);
+		bala.setGlobalPosition(getGlobalPosition());
 	}
 
-	/** Busca la papa por grupo, así no importa en qué parte del árbol esté. */
 	private Node2D buscarPapa() {
 		Node n = getTree().getFirstNodeInGroup(grupoPlayer);
 		if (n instanceof Node2D) return (Node2D) n;
@@ -146,10 +203,11 @@ public class Horno extends CharacterBody2D {
 	// Vida
 	// ------------------------------------------------------------------
 
-	/** Lo llaman las balas / ataques de la papa. */
+	/** Lo llaman los proyectiles de la papa. */
 	@Register
 	public void recibirDanio(double cantidad) {
 		if (muerto) return;
+		if (horn != null) horn.play();
 		vida -= cantidad;
 		tiempoFlash = 0.1;
 		sprite.setModulate(colorGolpe);
@@ -169,10 +227,10 @@ public class Horno extends CharacterBody2D {
 		queueFree();
 	}
 
-	/** Para que el spawner pueda escalar la dificultad. */
+	/** Lo usa el SpawnerEnemigos para que salgan más duros con el tiempo. */
 	public void escalar(double multiplicador) {
 		vidaMax *= multiplicador;
 		vida = vidaMax;
-		danio *= multiplicador;
+		danioProyectil *= multiplicador;
 	}
 }
