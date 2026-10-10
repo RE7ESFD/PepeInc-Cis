@@ -35,7 +35,7 @@ public class Potato extends CharacterBody2D {
 	private final StringName down = new StringName("ui_down");
 	private final StringName grupoPlayer = new StringName("player");
 
-	@Visible public double speed = 800.0.7*(100-health);
+	@Visible public double speed = 800;
 	@Visible public double health = 100;
 	@Visible public PackedScene escenaProyectil;
 	@Visible public String rutaProyectil = "res://Scenes/proyectil.tscn";
