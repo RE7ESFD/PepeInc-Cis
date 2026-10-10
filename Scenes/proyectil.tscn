@@ -9,6 +9,7 @@ load_path = "res://.godot/imported/fuego.png-0ef16e70e5686b34094bda19a7c734ca.ct
 radius = 70.00714
 
 [node name="Proyectil" type="Area2D" unique_id=1802031205]
+collision_mask = 2
 script = ExtResource("1_mnr2y")
 metadata/_edit_group_ = true
 
