@@ -19,10 +19,16 @@ import godot.global.GD;
 @Script
 public class SpawnerEnemigos extends Node2D {
 
-	@Visible public double intervaloInicial = 1.5;   // segundos entre spawns al inicio
-	@Visible public double intervaloMinimo = 0.25;   // lo más rápido que puede llegar
-	@Visible public double reduccionPorSegundo = 0.01;
-	@Visible public double radioSpawn = 350.0;       // distancia a la papa donde aparecen
+	@Visible public double intervaloInicial = 3;   // segundos entre spawns al inicio
+	@Visible public double intervaloMinimo = 0.5;   // lo más rápido que puede llegar
+	@Visible public double reduccionPorSegundo = 0.0001;
+	@Visible public double radioSpawn = 1800.0;      // distancia a la papa donde aparecen
+
+	// Bordes de la arena (por dentro de los muros de map.tscn) para no spawnear afuera
+	@Visible public double arenaMinX = -3650.0;
+	@Visible public double arenaMaxX = 3820.0;
+	@Visible public double arenaMinY = -800.0;
+	@Visible public double arenaMaxY = 1840.0;
 	@Visible public int maxEnemigos = 150;
 
 	private PackedScene escenaEnemigo;
@@ -76,6 +82,9 @@ public class SpawnerEnemigos extends Node2D {
 		double angulo = Math.random() * Math.PI * 2.0;
 		Vector2 offset = new Vector2(Math.cos(angulo) * radioSpawn, Math.sin(angulo) * radioSpawn);
 		Vector2 pos = ((Node2D) papa).getGlobalPosition().plus(offset);
+		pos = new Vector2(
+				Math.max(arenaMinX, Math.min(arenaMaxX, pos.getX())),
+				Math.max(arenaMinY, Math.min(arenaMaxY, pos.getY())));
 
 		Node instancia = escenaEnemigo.instantiate();
 		if (!(instancia instanceof Node2D)) {
@@ -98,3 +107,4 @@ public class SpawnerEnemigos extends Node2D {
 	}
 
 }
+
