@@ -1,0 +1,22 @@
+*   [33m8750e2a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mDavid[m[33m, [m[1;31morigin/Dev[m[33m, [m[1;31morigin/David[m[33m)[m Merge pull request #2 from RE7ESFD/Diaz
+[31m|[m[32m\[m  
+[31m|[m *   [33m83d1198[m[33m ([m[1;31morigin/Diaz[m[33m)[m Merge branch 'Dev' into Diaz
+[31m|[m [33m|[m[31m\[m  
+[31m|[m [33m|[m[31m/[m  
+[31m|[m[31m/[m[33m|[m   
+* [33m|[m   [33m5e940d6[m Merge pull request #1 from RE7ESFD/Matius
+[35m|[m[36m\[m [33m\[m  
+[35m|[m * [33m\[m   [33m0fdf990[m[33m ([m[1;31morigin/Matius[m[33m)[m Merge branch 'Dev' into Matius
+[35m|[m [1;31m|[m[35m\[m [33m\[m  
+[35m|[m [1;31m|[m[35m/[m [33m/[m  
+[35m|[m[35m/[m[1;31m|[m [33m|[m   
+* [1;31m|[m [33m|[m [33m18e9def[m[33m ([m[1;31morigin/Feat_ChangeSprites[m[33m, [m[1;32mdev[m[33m)[m Solve the copnflicts and aplied the movement to player human+AI
+* [1;31m|[m [33m|[m [33m76c5c72[m add the map and change potato human+ia
+[1;32m|[m * [33m|[m [33m23412db[m fix enemy and doing a world for testing and it worked Ai + people
+[1;32m|[m * [33m|[m [33m871b0e8[m add enemy horn with thge spawner and adjust potato for testing people + ia
+[1;32m|[m[1;32m/[m [33m/[m  
+[1;32m|[m * [33m627d221[m Creando escena y funcion de proyectil
+[1;32m|[m[1;32m/[m  
+* [33m48178cb[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Add the player,assets the strcucture of directories human+AI
+* [33md93537e[m Create the proyect
+* [33m9ed65df[m first commit
