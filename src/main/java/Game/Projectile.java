@@ -26,6 +26,7 @@ public class Projectile extends Area2D {
 
 	private double tiempoVivo = 0.0;
 	private boolean usada = false;
+	public double multiplicadorDanio = 1.0;
 
 	@Register
 	@Override
@@ -64,16 +65,23 @@ public class Projectile extends Area2D {
 			Node2D cuerpo = cuerpos.get(i);
 			if (cuerpo instanceof Horno) {
 				usada = true;
-				((Horno) cuerpo).recibirDanio(danio);
+				((Horno) cuerpo).recibirDanio(danioFinal());
 				queueFree();
 				return;
 			}
 			if (cuerpo instanceof Fueguito) {
 				usada = true;
-				((Fueguito) cuerpo).recibirDanio(danio);
+				((Fueguito) cuerpo).recibirDanio(danioFinal());
 				queueFree();
 				return;
 			}
 		}
+	}
+	public double danioFinal(){
+		return danio*multiplicadorDanio;
+	}
+
+	public void setMultiplicadorDanio(double multiplicadorDanio) {
+		this.multiplicadorDanio = multiplicadorDanio;
 	}
 }

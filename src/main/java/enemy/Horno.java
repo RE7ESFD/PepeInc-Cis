@@ -40,7 +40,6 @@ public class Horno extends CharacterBody2D {
 	private boolean muerto = false;
 	private boolean atacando = false;
 	private boolean disparoHecho = false;
-	private boolean ejeHorizontal = false;
 
 	private AnimatedSprite2D sprite;
 	private AudioStreamPlayer horn;       // sonido al recibir golpe (opcional)
@@ -49,13 +48,17 @@ public class Horno extends CharacterBody2D {
 	private final StringName grupoPlayer = new StringName("player");
 	private final StringName grupoEnemigos = new StringName("enemigos");
 
-	private final StringName animWalkDown = new StringName("walk_down");
-	private final StringName animWalkUp = new StringName("walk_up");
-	private final StringName animWalkLeft = new StringName("walk_left");
+	private static final boolean INVERTIR_HORIZONTAL = false;
+
+	private final StringName animWalkLeft  = new StringName("walk_left");   // tus nombres reales
 	private final StringName animWalkRight = new StringName("walk_right");
-	private final StringName animAtaque = new StringName("ataque");
+	private final StringName animWalkUp    = new StringName("walk_up");
+	private final StringName animWalkDown  = new StringName("walk_down");
+	private final StringName anSimAtaque = new StringName("ataque");   // nombre exacto de tu SpriteFrames
 
 	private StringName animCaminar = animWalkDown;
+	private boolean ejeHorizontal = true;
+	private double bloqueoAnim = 0.0;
 
 	private final Color colorNormal = new Color(1.0, 1.0, 1.0, 1.0);
 	private final Color colorGolpe = new Color(1.0, 0.35, 0.35, 1.0);
@@ -123,12 +126,28 @@ public class Horno extends CharacterBody2D {
 	private void orientar(Vector2 dir) {
 		double ax = Math.abs(dir.getX());
 		double ay = Math.abs(dir.getY());
-		// Margen para que no cambie de eje (izq/der <-> arriba/abajo) por poca diferencia
+		if (ax < 0.001 && ay < 0.001) return;   // quieto: conserva la animacion actual
+
+		// Histeresis: solo cambia de eje si el otro gana por mas de un 30%
 		if (ejeHorizontal && ay > ax * 1.3) ejeHorizontal = false;
 		else if (!ejeHorizontal && ax > ay * 1.3) ejeHorizontal = true;
 
-		if (ejeHorizontal) animCaminar = dir.getX() < 0 ? animWalkLeft : animWalkRight;
-		else animCaminar = dir.getY() < 0 ? animWalkUp : animWalkDown;
+		StringName nueva;
+		if (ejeHorizontal) {
+			boolean haciaDerecha = dir.getX() > 0;
+			if (INVERTIR_HORIZONTAL) haciaDerecha = !haciaDerecha;
+			nueva = haciaDerecha ? animWalkRight : animWalkLeft;
+		} else {
+			nueva = dir.getY() > 0 ? animWalkDown : animWalkUp;
+		}
+
+		// Solo cambia si es distinta Y ya paso el bloqueo. Aqui (y solo aqui) se reproduce.
+		if (nueva != animCaminar && bloqueoAnim <= 0) {
+			animCaminar = nueva;
+			bloqueoAnim = 0.2;                 // segundos que se mantiene
+			sprite.play(animCaminar);
+			GD.print("Horno anim -> " + animCaminar);
+		}
 	}
 
 	// ------------------------------------------------------------------
@@ -139,7 +158,7 @@ public class Horno extends CharacterBody2D {
 		atacando = true;
 		disparoHecho = false;
 		setVelocity(new Vector2(0.0, 0.0));
-		sprite.play(animAtaque); // "ataque" no hace loop
+		sprite.play(anSimAtaque); // "ataque" no hace loop
 	}
 
 	private void procesarDisparo() {
