@@ -1,13 +1,12 @@
 {
-	"custom_jvm_args": [],
-	"debug_address": "*",
-	"debug_port": 5005,
-	"disable_memory_management": false,
-	"jmx_port": -1,
-	"max_string_size": -1,
-	"useNativeImage": false,
-	"use_debug": false,
-	"value_buffer_size_factor": 0,
-	"version": "3.0",
-	"wait_for_debugger": false
+    "custom_jvm_args": [],
+    "debug_address": "*",
+    "debug_port": 5005,
+    "disable_gc": false,
+    "jmx_port": -1,
+    "max_string_size": -1,
+    "useNativeImage": false,
+    "use_debug": false,
+    "version": "3.0",
+    "wait_for_debugger": false
 }
