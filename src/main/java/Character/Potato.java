@@ -31,13 +31,15 @@ public class Potato extends CharacterBody2D {
 	private final StringName up = new StringName("ui_up");
 	private final StringName down = new StringName("ui_down");
 	private final StringName grupoPlayer = new StringName("player");
-
 	@Visible public double speed = 800.0;
 	@Visible public double health = 100;
 	@Visible public PackedScene escenaProyectil;
 	@Visible public String rutaProyectil = "res://Scenes/proyectil.tscn";
 	private double tiempoInvulnerable = 0.0;
 	private double invulnerableTras = 0.5;
+	private AudioStreamPlayer potatoDamge;
+	private AudioStreamPlayer Explode;
+
 	Vector2 dirBala;
 
 	@Register
@@ -46,17 +48,23 @@ public class Potato extends CharacterBody2D {
 		addToGroup(grupoPlayer);
 		GD.print("Potato: _ready ejecutado, registrada en grupo 'player'");
 		GD.print("Potato: escenaProyectil " + (escenaProyectil == null
-				? "es NULL (el inspector no la entregó al juego)" : "OK, asignada"));
+		? "es NULL (el inspector no la entregó al juego)" : "OK, asignada"));
 		sprite = (AnimatedSprite2D) getNode(new NodePath("AnimatedSprite2D"));
+		potatoDamge = (AudioStreamPlayer) getNode(new NodePath("potatoDamge"));
+		Explode = (AudioStreamPlayer) getNode(new NodePath("Explode"));
+
 	}
 	@Register
 	public void recibirDanio(double cantidad) {
 		if (tiempoInvulnerable > 0) return;
+		potatoDamge.play();
 		health -= cantidad;
 		tiempoInvulnerable = invulnerableTras;
 		GD.print("Papa recibió " + cantidad + " de daño. Vida: " + health);
 
+
 		if (health <= 0) {
+			Explode.play();
 			GD.print("La papa se murió :(");
 			getTree().reloadCurrentScene();
 		}
